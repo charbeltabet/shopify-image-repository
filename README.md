@@ -7,8 +7,8 @@ The API features:
   - privatized,
   - transfer_ownership
 
-- **ProtectedActions** who belong to **images** for:
-  - keeping track of **actions** that can only be performed by the image owner such as `:update` and `:destroy`
+- **ProtectedActions** who belong to **images** used for:
+  - **actions** that can only be performed by the user who is the image's owner. such as `:update` and `:destroy`
 
 - **Users** authentified using API Key who:
   - own images,
@@ -17,11 +17,8 @@ The API features:
 - **GrantedAccesses** who belong to other **users** and assigned by the image's owner for:
   - keeping track of what **ProtectedActions** can a user who doesn't own an **image** perform on it.
 
-Images are stored using the rails's default `active_storage_attachments`, user's permissions and accesses are handled using two tables, `protected_actions` and `granted_accesses` that associate references of the `users` and `images` tables to the image controller `actions`.
-
 An OpenApi interface that allows to consume and visualize the RESTful web service is available at: https://shopify-image-repository.herokuapp.com/
 
-Instructions on installation and usage follow.
 
 ## Table of Contents
 
