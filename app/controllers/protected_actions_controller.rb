@@ -39,6 +39,7 @@ class ProtectedActionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def protected_action_params
+      params.require(:action)
       params.fetch(:protected_action, {}).permit(:action).merge(image_id: params[:image_id])
     end
 end

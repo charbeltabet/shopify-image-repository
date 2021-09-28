@@ -26,15 +26,6 @@ class GrantedAccessesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /granted_accesses/1
-  def update
-    if @granted_access.update(granted_access_params)
-      render json: @granted_access
-    else
-      render json: @granted_access.errors, status: :unprocessable_entity
-    end
-  end
-
   # DELETE /granted_accesses/1
   def destroy
     @granted_access.destroy
@@ -55,6 +46,7 @@ class GrantedAccessesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def granted_access_params
+      params.require([:image_id, :action])
       params.fetch(:granted_access, {}).permit(:image_id, :action).merge(user_id: params[:user_id].to_i)
     end
 end
