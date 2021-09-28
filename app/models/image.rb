@@ -61,6 +61,7 @@ class Image < ApplicationRecord
   end
 
   def ownership_transfer(new_user_id)
+    self.granted_accesses.destroy_all
     self.update(user_id: new_user_id)
   end
   
