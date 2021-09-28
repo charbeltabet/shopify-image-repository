@@ -19,7 +19,8 @@ RSpec.configure do |config|
       openapi: '3.0.1',
       info: {
         title: 'Images repository API documentation',
-        version: 'v1'
+        version: 'v1',
+        description: 'This is the API documentation of the images repository at https://github.com/charbeltabet/shopify-image-repository'
       },
       paths: {},
       servers: [

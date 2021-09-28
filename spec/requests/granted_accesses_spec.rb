@@ -1,15 +1,15 @@
 require 'swagger_helper'
 
-RSpec.describe 'protected_actions', type: :request do
+RSpec.describe 'granted_accesses', type: :request do
 
-  path '/images/{image_id}/protected_actions' do
-    # You'll want to customize the parameter types...    
-    parameter name: 'image_id', in: :path, type: :string, description: 'image_id'
+  path '/users/{user_id}/granted_accesses' do
+    # You'll want to customize the parameter types...
+    parameter name: 'user_id', in: :path, type: :string, description: 'user_id'
 
-    get('list protected_actions') do
-      tags 'Images Protected Actions'
+    get('list granted_accesses') do
+      tags 'User\'s Image Granted Accesses'
       response(200, 'successful') do
-        let(:image_id) { '123' }
+        let(:user_id) { '123' }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -22,10 +22,26 @@ RSpec.describe 'protected_actions', type: :request do
       end
     end
 
-    post('create protected_action') do
-      tags 'Images Protected Actions'
+    post('create granted_access') do
+      tags 'User\'s Image Granted Accesses'
       response(200, 'successful') do
-        let(:image_id) { '123' }
+        let(:user_id) { '123' }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
+    end
+
+    delete('destroy_all granted_access') do
+      tags 'User\'s Image Granted Accesses'
+      response(200, 'successful') do
+        let(:user_id) { '123' }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -39,15 +55,15 @@ RSpec.describe 'protected_actions', type: :request do
     end
   end
 
-  path '/images/{image_id}/protected_actions/{id}' do
+  path '/users/{user_id}/granted_accesses/{id}' do
     # You'll want to customize the parameter types...
-    parameter name: 'image_id', in: :path, type: :string, description: 'image_id'
+    parameter name: 'user_id', in: :path, type: :string, description: 'user_id'
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    get('show protected_action') do
-      tags 'Images Protected Actions'
+    get('show granted_access') do
+      tags 'User\'s Image Granted Accesses'
       response(200, 'successful') do
-        let(:image_id) { '123' }
+        let(:user_id) { '123' }
         let(:id) { '123' }
 
         after do |example|
@@ -61,10 +77,10 @@ RSpec.describe 'protected_actions', type: :request do
       end
     end
 
-    patch('update protected_action') do
-      tags 'Images Protected Actions'
+    patch('update granted_access') do
+      tags 'User\'s Image Granted Accesses'
       response(200, 'successful') do
-        let(:image_id) { '123' }
+        let(:user_id) { '123' }
         let(:id) { '123' }
 
         after do |example|
@@ -78,10 +94,10 @@ RSpec.describe 'protected_actions', type: :request do
       end
     end
 
-    put('update protected_action') do
-      tags 'Images Protected Actions'
+    put('update granted_access') do
+      tags 'User\'s Image Granted Accesses'
       response(200, 'successful') do
-        let(:image_id) { '123' }
+        let(:user_id) { '123' }
         let(:id) { '123' }
 
         after do |example|
@@ -95,10 +111,10 @@ RSpec.describe 'protected_actions', type: :request do
       end
     end
 
-    delete('delete protected_action') do
-      tags 'Images Protected Actions'
+    delete('delete granted_access') do
+      tags 'User\'s Image Granted Accesses'
       response(200, 'successful') do
-        let(:image_id) { '123' }
+        let(:user_id) { '123' }
         let(:id) { '123' }
 
         after do |example|
