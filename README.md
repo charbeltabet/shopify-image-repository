@@ -17,6 +17,8 @@ The API features:
 - **GrantedAccesses** who belong to other **users** and assigned by the image's owner for:
   - keeping track of what **ProtectedActions** can a user who doesn't own an **image** perform on it.
 
+To use the API, you will need to send requests to it using any http client like curl or postman. 
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -45,8 +47,8 @@ Alternatively, I recommend deploying to heroku:
 
 ## Usage
 Enter https://shopify-image-repository.herokuapp.com/ to view the available and documented endpoints.
-
-Feel free to remove any sections that aren't applicable to your project.
+Send api requests to https://shopify-image-repository.herokuapp.com/ using any http client like curl or postman or axios.
+DO NOT send API requests through the "Try now" buttons because this functionality is still under development, see the [Kanban](https://github.com/charbeltabet/shopify-image-repository/projects/1) board.
 
 ## Support
 
