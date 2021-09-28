@@ -17,9 +17,6 @@ The API features:
 - **GrantedAccesses** who belong to other **users** and assigned by the image's owner for:
   - keeping track of what **ProtectedActions** can a user who doesn't own an **image** perform on it.
 
-An OpenApi interface that allows to consume and visualize the RESTful web service is available at: https://shopify-image-repository.herokuapp.com/
-
-
 ## Table of Contents
 
 - [Installation](#installation)
@@ -47,7 +44,7 @@ Alternatively, I recommend deploying to heroku:
 - use [heroku's github integration](https://devcenter.heroku.com/articles/github-integration) on your fork.
 
 ## Usage
-Enter https://shopify-image-repository.herokuapp.com/ to view the available and documented endpoints. The api documentation allows you to send http requests to the listed endpoints. Alternatively, you can use any http client or api development tool. 
+Enter https://shopify-image-repository.herokuapp.com/ to view the available and documented endpoints.
 
 Feel free to remove any sections that aren't applicable to your project.
 
