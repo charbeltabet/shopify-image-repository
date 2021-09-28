@@ -309,4 +309,4 @@ paths:
         '200':
           description: successful
 servers:
-- url: http://localhost:3000
+- url: https://shopify-image-repository.herokuapp.com
