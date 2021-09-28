@@ -27,8 +27,8 @@ class Image < ApplicationRecord
   before_save :actualize_attachment
   after_create :set_default_protected_actions
 
-  DEFAULT_PROTECTED_ACTIONS = [:update, :destroy, :transfer_ownership]
   PROTECTABLE_ACTIONS = ImagesController.action_methods.to_a.reject { |a| [:create, :index].include? a }
+  DEFAULT_PROTECTED_ACTIONS = PROTECTABLE_ACTIONS.reject { |a| [:show, :view].include? a }
 
   def binary
     return unless self.visual.attached?
