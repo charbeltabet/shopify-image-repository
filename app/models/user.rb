@@ -36,12 +36,6 @@ class User < ApplicationRecord
     User.exists?(id: user_id, is_superuser: 1)
   end
 
-  def allowed_to_proceed?(image_id:, action:)
-    return true if self.is_superuser
-
-    is_superuser? || owns_image?(image_id) || has_granted_access?(image_id, action)
-  end
-
   def owns_image?(image_id)
     self.images.exists?(image_id)
   end
