@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
   private
 
   def set_current_user
-    return unless request.headers["Authorization"]
+    return unless request.headers["Authorization"].present?
     @current_user = User.find_by_api_key(request.headers["Authorization"]) 
 
     return unless @current_user
@@ -22,16 +22,16 @@ class ApplicationController < ActionController::API
   def require_user
     return if @current_user
 
-    return render json: { message: "Could not authentifie a user using the authentication header value" }, status: :unauthorized
+    return render json: { message: "Could not authentifie a user, the 'Authentification' header is non present or invalid" }, status: :unauthorized
   end
 
-  def access_params
-    params.fetch(:access, {}).permit(:controller, :action).merge({ record_id: params[:id] })
-  end
-
-  def require_super_user_or_image_owner
-    return if @current_user.owns_image?(params[:image_id]) || @current_user.is_superuser?
+  def require_image_owner
+    return if user_is_owner_or_superuser?
 
     return render json: { message: "You need to be signed in as the image owner to proceed." }
+  end
+
+  def user_is_owner_or_superuser?(user = @current_user)
+    @image.user_id == user.id || user.is_superuser?
   end
 end

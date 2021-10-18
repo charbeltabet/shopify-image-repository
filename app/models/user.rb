@@ -19,7 +19,12 @@ class User < ApplicationRecord
   before_validation :strip_username
 
   def self.create_with_api_key(**kwargs)
-    api_key = srand.to_s
+    if kwargs.keys.include?(:api_key)
+      api_key = kwargs[:api_key]
+      kwargs = kwargs.except(:api_key)
+    else
+      api_key = srand.to_s 
+    end
 
     user = self.new(kwargs)
     user.ciphered_api_key = self.encrypted_hashed_secret(secret: api_key)
@@ -40,8 +45,9 @@ class User < ApplicationRecord
     self.images.exists?(image_id)
   end
 
-  def has_granted_access?(image_id, action)
-    !Image.find(image_id).is_action_protected?(action) || GrantedAccess.exists?(image_id: image_id, user_id: self.id, action: action)
+  def has_granted_access?(image_id:, action:)
+    granted_accesses.exists?(image_id: image_id, action: action)
+    # !Image.find(image_id).is_action_protected?(action) || GrantedAccess.exists?(image_id: image_id, user_id: self.id, action: action)
   end
 
   private

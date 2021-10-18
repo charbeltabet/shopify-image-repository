@@ -1,6 +1,8 @@
 require "./app/serializers/image_serializer.rb"
 
 class ImagesController < ApplicationController
+  BASE_PROTECTED_ACTIONS = ["update", "destroy", "transfer_ownership", "publicize", "privatize"]
+
   before_action :require_user, only: [:create, :update, :destroy, :transfer_ownership, :publicize, :privatize]
   before_action :set_image, only: [:show, :update, :destroy, :view, :transfer_ownership, :publicize, :privatize]
   before_action :require_authorized_user
@@ -48,7 +50,7 @@ class ImagesController < ApplicationController
   def transfer_ownership
     new_user_id = User.find_by!(username: params[:new_user]).id
     if new_user_id == @current_user_id
-      render json: { message: "ownership transfer failed", errors: ["can't transfer ownership to yourself"], image: @image }, status: :unprocessable_entity
+      render json: { message: "ownership transfer failed", errors: ["can't transfer ownership to current image owner"], image: @image }, status: :unprocessable_entity
     elsif @image.ownership_transfer(new_user_id)
       render json: { message: "ownership transfer succeeded", image: @image }
     else
@@ -81,10 +83,21 @@ class ImagesController < ApplicationController
   end
 
   def require_authorized_user
-    return unless @image
+    return if @image.nil?
 
-    unless @image.can_user_take_action?(user_id: @current_user_id, action: params[:action])
-      return render json: { message: "You need to be granted '#{params[:action]}' access or own the image to proceed." }, status: :forbidden
-    end
+    return if action_is_unprotected?
+    return if user_is_owner_or_superuser?
+    return if user_has_access_to_protected_action?
+
+    render json: { message: "You need to be granted '#{params[:action]}' access or own the image to proceed." }, status: :forbidden
+  end
+
+  def action_is_unprotected?
+    BASE_PROTECTED_ACTIONS.exclude?(params[:action]) &&
+    !ProtectedAction.exists?(image_id: @image.id, action: params[:action])
+  end
+
+  def user_has_access_to_protected_action?
+    @current_user.has_granted_access?(image_id: @image.id, action: params[:action])
   end
 end

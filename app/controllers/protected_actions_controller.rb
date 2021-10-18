@@ -1,7 +1,7 @@
 class ProtectedActionsController < ApplicationController
   before_action :set_protected_action, only: [:show, :update, :destroy]
   before_action :require_user, only: [:index, :show]
-  before_action :require_super_user_or_image_owner, except: [:index, :show]
+  before_action :require_image_owner, except: [:index, :show]
 
   # GET /protected_actions
   def index

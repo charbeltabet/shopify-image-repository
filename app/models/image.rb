@@ -25,7 +25,6 @@ class Image < ApplicationRecord
 
   before_validation :generate_unique_name
   before_save :actualize_attachment
-  after_create :set_default_protected_actions
 
   PROTECTABLE_ACTIONS = ImagesController.action_methods.to_a.reject { |a| ["create", "index", "respond_to"].include? a }
   DEFAULT_PROTECTED_ACTIONS = PROTECTABLE_ACTIONS.reject { |a| ["show", "view"].include? a }
@@ -42,12 +41,6 @@ class Image < ApplicationRecord
 
   def protect_action(action_method)
     self.protected_actions.create(action: action_method)
-  end
-
-  def set_default_protected_actions
-    DEFAULT_PROTECTED_ACTIONS.each do |action_method|
-      protect_action(action_method)
-    end
   end
 
   def privatize
@@ -82,13 +75,9 @@ class Image < ApplicationRecord
   end
 
   def is_private?
-    ImagesController.action_methods.all? do |action_method|
+    ImagesController.action_methods.to_a do |action_method|
       protected_actions.exists?(action: action_method)
     end
-  end
-
-  def can_user_take_action?(user_id:, action:)
-    User.superuser_exists?(user_id) || self.user_id == user_id || is_action_unprotected?(action) || granted_accesses.exists?(user_id: user_id, action: action)
   end
 
   private

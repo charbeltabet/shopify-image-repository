@@ -1,7 +1,7 @@
 class GrantedAccessesController < ApplicationController
   before_action :set_granted_access, only: [:show, :update, :destroy]
   before_action :require_user, except: [:index, :show]
-  before_action :require_super_user_or_image_owner, except: [:index, :show]
+  before_action :require_image_owner, except: [:index, :show]
 
   # GET /granted_accesses
   def index
